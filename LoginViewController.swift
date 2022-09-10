@@ -25,10 +25,9 @@ class LoginViewController: UIViewController {
             }
             else{
                 self.performSegue(withIdentifier: K.loginSegue, sender: self)
-            }
-        }
-            
-        }
+         }
+}
+}
     }
     
 }
