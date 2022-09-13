@@ -15,6 +15,12 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+        navigationController?.navigationBar.backgroundColor = UIColor(named: K.BrandColors.purple);
+        navigationItem.backBarButtonItem?.tintColor = UIColor.cyan;
+        
+    }
     @IBAction func registerPressed(_ sender: UIButton) {
         //copied from firebase password authentication
         //optional chaining

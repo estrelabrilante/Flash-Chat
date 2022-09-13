@@ -63,6 +63,8 @@ class ChatViewController: UIViewController {
                             
                             DispatchQueue.main.async {
                                 self.tableView.reloadData();
+                                let indexPath = IndexPath(row: self.messages.count-1 , section: 0)
+                                self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                             }
                             
                         }
@@ -85,7 +87,12 @@ class ChatViewController: UIViewController {
                     print("there was an error savind data to firestore")
                 }
                 else{
-                    print("Successfully save data")
+                    print("Successfully save data");
+                    DispatchQueue.main.async {
+                        self.messageTextfield.text = ""
+                        
+                    }
+                   
                 }
             }
              
@@ -116,13 +123,35 @@ extension ChatViewController: UITableViewDataSource{
     }
     //indexPath is position
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let message = messages[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell;
+        cell.label.text = message.body;
+        //message from current user
+        if(message.sender == Auth.auth().currentUser?.email){
+            cell.leftImageView.isHidden = false;
+            cell.rightImageView.isHidden = true;
+            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.lightPurple)   ;
+            cell.label.textColor = UIColor(named: K.BrandColors.purple)
+        }
+        //message from sender
+        else{
+            cell.leftImageView.isHidden = true;
+            cell.rightImageView.isHidden = false;
+            cell.messageBubble.backgroundColor = UIColor(named: K.BrandColors.purple);
+            cell.label.textColor = UIColor(named: K.BrandColors.lightPurple);
+            
+        }
+        
+        return cell;
         //Box standard UITableViewCell
        // let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath);
         
         //Message cell as Object class
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MessageCell;        //cell.textLabel?.text = messages[indexPath.row].body
-        cell.label.text = messages[indexPath.row].body;
-        return cell;
+        
+        //default label in the cell
+        //cell.textLabel?.text = messages[indexPath.row].body
+        //cell that added
+       
     }
     
     
